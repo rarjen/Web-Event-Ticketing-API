@@ -19,4 +19,55 @@ const createCategories = async (req) => {
   return result;
 };
 
-module.exports = { getAllCategories, createCategories };
+const getOneCategories = async (req) => {
+  const { id } = req.params;
+
+  const result = await Categories.findOne({ _id: id }).select("_id name");
+
+  if (!result) throw new NotFoundError(`Tidak ada kategori dengan id: ${id}`);
+
+  return result;
+};
+
+const updateCategories = async (req) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  // cari categories field name dan id selain yang dikirim dari params
+  const check = await Categories.findOne({
+    name,
+    _id: { $ne: id },
+  });
+
+  if (check) throw new BadRequestError("Kategori nama duplikat");
+
+  const result = await Categories.findOneAndUpdate(
+    { _id: id },
+    { name },
+    { new: true, runValidators: true }
+  );
+
+  if (!result) throw new NotFoundError(`Tidak ada kategori dengan id: ${id}`);
+
+  return result;
+};
+
+const deleteCategories = async (req) => {
+  const { id } = req.params;
+
+  const result = await Categories.findOne({ _id: id });
+
+  if (!result) throw new NotFoundError(`Tidak ada kategori dengan id: ${id}`);
+
+  await result.remove();
+
+  return result;
+};
+
+module.exports = {
+  getAllCategories,
+  createCategories,
+  getOneCategories,
+  updateCategories,
+  deleteCategories,
+};
