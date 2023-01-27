@@ -54,8 +54,46 @@ const find = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    const result = await Categories.findOneAndUpdate(
+      { _id: id },
+      { name },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).json({
+      status: true,
+      message: "Update Data Success",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const destroy = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await Categories.findByIdAndRemove(id);
+
+    return res.status(200).json({
+      status: true,
+      message: "Delete Data Success",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   create,
   find,
   index,
+  destroy,
+  update,
 };
