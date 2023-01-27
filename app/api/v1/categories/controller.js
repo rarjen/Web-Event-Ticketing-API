@@ -1,14 +1,17 @@
-const Categories = require("./model");
+const { StatusCodes } = require("http-status-codes");
 const {
   getAllCategories,
   createCategories,
+  getOneCategories,
+  updateCategories,
+  deleteCategories,
 } = require("../../../services/mongoose/categories");
 
 const create = async (req, res, next) => {
   try {
     const result = await createCategories(req);
 
-    return res.status(201).json({
+    return res.status(StatusCodes.CREATED).json({
       status: true,
       message: "Data Created",
       data: result,
@@ -22,7 +25,7 @@ const index = async (req, res, next) => {
   try {
     const result = await getAllCategories();
 
-    return res.status(200).json({
+    return res.status(StatusCodes.OK).json({
       status: true,
       message: "Show Data Success",
       data: result,
@@ -34,18 +37,9 @@ const index = async (req, res, next) => {
 
 const find = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const result = await getOneCategories(req);
 
-    const result = await Categories.findOne({ _id: id }).select("_id name");
-
-    if (!result) {
-      return res.status(400).json({
-        status: false,
-        message: "No Data",
-      });
-    }
-
-    return res.status(200).json({
+    return res.status(StatusCodes.OK).json({
       status: true,
       message: "Show Data Success",
       data: result,
@@ -57,16 +51,9 @@ const find = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const { name } = req.body;
+    const result = await updateCategories(req);
 
-    const result = await Categories.findOneAndUpdate(
-      { _id: id },
-      { name },
-      { new: true, runValidators: true }
-    );
-
-    return res.status(200).json({
+    return res.status(StatusCodes.OK).json({
       status: true,
       message: "Update Data Success",
       data: result,
@@ -78,10 +65,9 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const result = await Categories.findByIdAndRemove(id);
+    const result = await deleteCategories(req);
 
-    return res.status(200).json({
+    return res.status(StatusCodes.OK).json({
       status: true,
       message: "Delete Data Success",
       data: result,
