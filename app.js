@@ -3,7 +3,12 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
 const cors = require("cors");
+
 const app = express();
+
+//error handling
+const notFoundMiddleware = require("./app/middlewares/not-found");
+const handleErrorMiddlware = require("./app/middlewares/handle-error");
 
 //routers
 const categoriesRouter = require("./app/api/v1/categories/router");
@@ -27,21 +32,23 @@ app.get("/", (req, res) => {
 
 app.use(v1, categoriesRouter);
 
-// 400 handler
-app.use((req, res, next) => {
-  return res.status(404).json({
-    status: false,
-    message: "Are you lost?",
-  });
-});
+app.use(notFoundMiddleware);
+app.use(handleErrorMiddlware);
+// // 400 handler
+// app.use((req, res, next) => {
+//   return res.status(404).json({
+//     status: false,
+//     message: "Are you lost?",
+//   });
+// });
 
-// 500 handler
-app.use((err, req, res, next) => {
-  console.log(err);
-  return res.status(500).json({
-    status: false,
-    message: err.message,
-  });
-});
+// // 500 handler
+// app.use((err, req, res, next) => {
+//   console.log(err);
+//   return res.status(500).json({
+//     status: false,
+//     message: err.message,
+//   });
+// });
 
 module.exports = app;
