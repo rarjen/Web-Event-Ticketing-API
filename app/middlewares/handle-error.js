@@ -23,7 +23,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
     customError.statusCode = 400;
   }
 
-  // Crash Error, unexpected req body value
+  // Crash Error
   if (err.name === "CastError") {
     customError.message = `No item found with id: ${err.value}`;
     customError.statusCode = 404;
