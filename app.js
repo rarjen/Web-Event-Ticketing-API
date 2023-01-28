@@ -6,12 +6,14 @@ const cors = require("cors");
 
 const app = express();
 
-//error handling
+//error handling import
 const notFoundMiddleware = require("./app/middlewares/not-found");
 const handleErrorMiddlware = require("./app/middlewares/handle-error");
 
 //routers
 const categoriesRouter = require("./app/api/v1/categories/router");
+const imagesRouter = require("./app/api/v1/images/router");
+const talentsRouter = require("./app/api/v1/talents/router");
 
 const v1 = "/api/v1/cms";
 
@@ -30,7 +32,10 @@ app.get("/", (req, res) => {
   });
 });
 
+// Use Routes
 app.use(v1, categoriesRouter);
+app.use(v1, imagesRouter);
+app.use(v1, talentsRouter);
 
 app.use(notFoundMiddleware);
 app.use(handleErrorMiddlware);
