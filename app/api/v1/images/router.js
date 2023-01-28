@@ -1,4 +1,5 @@
 const router = require("express").Router();
+
 const { createImg } = require("./controller");
 const upload = require("../../../middlewares/multer");
 
