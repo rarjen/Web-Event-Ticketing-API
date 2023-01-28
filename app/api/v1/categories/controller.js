@@ -13,6 +13,7 @@ const create = async (req, res, next) => {
 
     return res.status(StatusCodes.CREATED).json({
       status: true,
+      message: "Success create data",
       data: result,
     });
   } catch (error) {
@@ -26,6 +27,7 @@ const index = async (req, res, next) => {
 
     return res.status(StatusCodes.OK).json({
       status: true,
+      message: "Success get all data",
       data: result,
     });
   } catch (error) {
@@ -39,6 +41,7 @@ const find = async (req, res, next) => {
 
     return res.status(StatusCodes.OK).json({
       status: true,
+      message: "Success get data",
       data: result,
     });
   } catch (error) {
@@ -52,6 +55,7 @@ const update = async (req, res, next) => {
 
     return res.status(StatusCodes.OK).json({
       status: true,
+      message: "Success update data",
       data: result,
     });
   } catch (error) {
@@ -65,6 +69,7 @@ const destroy = async (req, res, next) => {
 
     return res.status(StatusCodes.OK).json({
       status: true,
+      message: "Success delete data",
       data: result,
     });
   } catch (error) {
