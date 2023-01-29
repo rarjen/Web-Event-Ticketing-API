@@ -1,20 +1,23 @@
 const Categories = require("../../api/v1/categories/model");
 const { NotFoundError, BadRequestError } = require("../../errors");
 
-const getAllCategories = async () => {
-  const result = await Categories.find({});
+// menampilkan semua data by id orginzer
+const getAllCategories = async (req) => {
+  const user = req.user;
+  const result = await Categories.find({ organizer: user.organizer });
 
   return result;
 };
 
 const createCategories = async (req) => {
+  const user = req.user;
   const { name } = req.body;
 
   const check = await Categories.findOne({ name });
 
   if (check) throw new BadRequestError("Nama kategori sudah ada");
 
-  const result = await Categories.create({ name });
+  const result = await Categories.create({ name, organizer: user.organizer });
 
   return result;
 };
