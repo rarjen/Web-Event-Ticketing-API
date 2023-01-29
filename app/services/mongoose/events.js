@@ -112,6 +112,10 @@ const updateEvents = async (req) => {
   await checkingCategories(category);
   await checkingTalent(talent);
 
+  const checkEvent = await Events.findOne({ _id: id });
+
+  if (!checkEvent) throw new NotFoundError(`Tidak ada event dengan id: ${id}`);
+
   const check = await Events.findOne({ title, _id: { $ne: id } });
 
   if (check) throw new BadRequestError("Title event sudah terdaftar");
@@ -133,8 +137,6 @@ const updateEvents = async (req) => {
     },
     { new: true, runValidators: true }
   );
-
-  if (!result) throw new NotFoundError(`Tidak ada event dengan id: ${id}`);
 
   return result;
 };
