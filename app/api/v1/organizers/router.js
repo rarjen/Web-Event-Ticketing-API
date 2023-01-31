@@ -1,8 +1,12 @@
 const router = require("express").Router();
-// const upload = require("../../../middlewares/multer");
+const {
+  authenticateUser,
+  //   authorizeRoles,
+} = require("../../../middlewares/auth");
 
-const { createCMSOrganizer } = require("./controller");
+const { createCMSOrganizer, createCMSUser } = require("./controller");
 
 router.post("/organizers", createCMSOrganizer);
+router.post("/users", authenticateUser, createCMSUser);
 
 module.exports = router;
