@@ -4,6 +4,7 @@ const { NotFoundError, BadRequestError } = require("../../errors");
 // menampilkan semua data by id orginzer
 const getAllCategories = async (req) => {
   const user = req.user;
+
   const result = await Categories.find({ organizer: user.organizer });
 
   return result;
@@ -23,9 +24,13 @@ const createCategories = async (req) => {
 };
 
 const getOneCategories = async (req) => {
+  const user = req.user;
   const { id } = req.params;
 
-  const result = await Categories.findOne({ _id: id }).select("_id name");
+  const result = await Categories.findOne({
+    _id: id,
+    organizer: user.organizer,
+  }).select("_id name");
 
   if (!result) throw new NotFoundError(`Tidak ada kategori dengan id: ${id}`);
 
@@ -33,12 +38,14 @@ const getOneCategories = async (req) => {
 };
 
 const updateCategories = async (req) => {
+  const user = req.user;
   const { id } = req.params;
   const { name } = req.body;
 
   // cari categories field name dan id selain yang dikirim dari params
   const check = await Categories.findOne({
     name,
+    organizer: user.organizer,
     _id: { $ne: id },
   });
 
@@ -56,9 +63,13 @@ const updateCategories = async (req) => {
 };
 
 const deleteCategories = async (req) => {
+  const user = req.user;
   const { id } = req.params;
 
-  const result = await Categories.findOne({ _id: id });
+  const result = await Categories.findOne({
+    _id: id,
+    organizer: user.organizer,
+  });
 
   if (!result) throw new NotFoundError(`Tidak ada kategori dengan id: ${id}`);
 
