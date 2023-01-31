@@ -1,6 +1,7 @@
 const Users = require("../../api/v1/users/model");
 const Organizers = require("../../api/v1/organizers/model");
 const { BadRequestError } = require("../../errors");
+const { StatusCodes } = require("http-status-codes");
 
 const createOrganizers = async (req) => {
   const { organizer, role, email, password, confirmPassword, name } = req.body;
@@ -30,4 +31,22 @@ const createOrganizers = async (req) => {
   return users;
 };
 
-module.exports = { createOrganizers };
+const createUsers = async (req, res) => {
+  const user = req.user;
+  const { name, password, role, confirmPassword, email } = req.body;
+
+  if (password !== confirmPassword) {
+    throw new BadRequestError("Password tidak cocok");
+  }
+  const result = await Users.create({
+    name,
+    email,
+    organizer: user.organizer,
+    password,
+    role,
+  });
+
+  return result;
+};
+
+module.exports = { createOrganizers, createUsers };
