@@ -3,9 +3,10 @@ const { checkingImage } = require("./images");
 const { NotFoundError, BadRequestError } = require("../../errors");
 
 const getAllTalents = async (req) => {
+  const user = req.user;
   const { keyword } = req.query;
 
-  let condition = {};
+  let condition = { organizer: user.organizer };
 
   // mencari dengan live search, bawaan mongoose
   // i adl manipulasi string jadi walaupun upper sama lower akan dianggap sama
@@ -29,27 +30,34 @@ const getAllTalents = async (req) => {
 };
 
 const createTalent = async (req) => {
+  const user = req.user;
   const { name, role, image } = req.body;
 
   // cari image dengan field image
   await checkingImage(image);
 
   // cari talents dengan field name
-  const checkName = await Talents.findOne({ name });
-  const checkImg = await Talents.findOne({ image });
+  const checkName = await Talents.findOne({ name, organizer: user.organizer });
+  // const checkImg = await Talents.findOne({ image });
 
   if (checkName) throw new BadRequestError("Pembicara sudah terdaftar");
-  if (checkImg) throw new BadRequestError("Gambar sudah terdaftar");
+  // if (checkImg) throw new BadRequestError("Gambar sudah terdaftar");
 
-  const result = await Talents.create({ name, role, image });
+  const result = await Talents.create({
+    name,
+    role,
+    image,
+    organizer: user.organizer,
+  });
 
   return result;
 };
 
 const getOneTalent = async (req) => {
+  const user = req.user;
   const { id } = req.params;
 
-  const result = await Talents.findOne({ _id: id })
+  const result = await Talents.findOne({ _id: id, organizer: user.organizer })
     .populate({
       path: "image",
       select: "id, name",
@@ -62,19 +70,24 @@ const getOneTalent = async (req) => {
 };
 
 const updateTalent = async (req) => {
+  const user = req.user;
   const { id } = req.params;
   const { name, role, image } = req.body;
 
   await checkingImage(image);
 
   // mengecek pembicara lain kecuali pembicara ini
-  const check = await Talents.findOne({ name, _id: { $ne: id } });
+  const check = await Talents.findOne({
+    name,
+    organizer: user.organizer,
+    _id: { $ne: id },
+  });
 
   if (check) throw new BadRequestError("Pembicara sudah terdaftar");
 
   const result = await Talents.findOneAndUpdate(
     { _id: id },
-    { name, role, image },
+    { name, role, image, organizer: user.organizer },
     { new: true, runValidators: true }
   ).select("_id name role image");
 
@@ -84,9 +97,10 @@ const updateTalent = async (req) => {
 };
 
 const deleteTalent = async (req) => {
+  const user = req.user;
   const { id } = req.params;
 
-  const result = await Talents.findOne({ _id: id });
+  const result = await Talents.findOne({ _id: id, organizer: user.organizer });
 
   if (!result) throw new NotFoundError(`Tidak ada pembicara dengan id: ${id}`);
 

@@ -5,9 +5,10 @@ const { checkingTalent } = require("./talents");
 const { NotFoundError, BadRequestError } = require("../../errors");
 
 const getAllEvents = async (req) => {
+  const user = req.user;
   const { keyword, category, talent } = req.query;
 
-  let condition = {};
+  let condition = { organizer: user.organizer };
 
   // search
   if (keyword) {
@@ -33,6 +34,7 @@ const getAllEvents = async (req) => {
 };
 
 const createEvents = async (req) => {
+  const user = req.user;
   const {
     title,
     date,
@@ -69,15 +71,17 @@ const createEvents = async (req) => {
     image,
     category,
     talent,
+    organizer: user.organizer,
   });
 
   return result;
 };
 
 const getOneEvents = async (req) => {
+  const user = req.user;
   const { id } = req.params;
 
-  const result = Events.findOne({ _id: id })
+  const result = Events.findOne({ _id: id, organizer: user.organizer })
     .populate({ path: "image", select: "_id name" })
     .populate({ path: "category", select: "_id name" })
     .populate({
@@ -92,6 +96,7 @@ const getOneEvents = async (req) => {
 };
 
 const updateEvents = async (req) => {
+  const user = req.user;
   const { id } = req.params;
   const {
     title,
@@ -116,7 +121,11 @@ const updateEvents = async (req) => {
 
   if (!checkEvent) throw new NotFoundError(`Tidak ada event dengan id: ${id}`);
 
-  const check = await Events.findOne({ title, _id: { $ne: id } });
+  const check = await Events.findOne({
+    title,
+    organizer: user.organizer,
+    _id: { $ne: id },
+  });
 
   if (check) throw new BadRequestError("Title event sudah terdaftar");
 
@@ -134,6 +143,7 @@ const updateEvents = async (req) => {
       image,
       category,
       talent,
+      organizer: user.organizer,
     },
     { new: true, runValidators: true }
   );
@@ -142,9 +152,10 @@ const updateEvents = async (req) => {
 };
 
 const deleteEvents = async (req) => {
+  const user = req.user;
   const { id } = req.params;
 
-  const result = await Events.findOne({ _id: id });
+  const result = await Events.findOne({ _id: id, organizer: user.organizer });
 
   if (!result) throw new NotFoundError(`Tidak ada event dengan id: ${id}`);
 

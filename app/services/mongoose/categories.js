@@ -14,7 +14,7 @@ const createCategories = async (req) => {
   const user = req.user;
   const { name } = req.body;
 
-  const check = await Categories.findOne({ name });
+  const check = await Categories.findOne({ name, organizer: user.organizer });
 
   if (check) throw new BadRequestError("Nama kategori sudah ada");
 
