@@ -6,7 +6,13 @@ const {
 
 const { createCMSOrganizer, createCMSUser } = require("./controller");
 
-router.post("/organizers", createCMSOrganizer);
+router.post(
+  "/organizers",
+  authenticateUser,
+  authorizeRoles("owner"),
+  createCMSOrganizer
+);
+
 router.post(
   "/users",
   authenticateUser,
