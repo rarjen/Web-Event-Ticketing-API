@@ -26,7 +26,7 @@ const createOrganizers = async (req) => {
   return users;
 };
 
-const createUsers = async (req, res) => {
+const createUsers = async (req) => {
   const user = req.user;
   const { name, password, role, confirmPassword, email } = req.body;
 
@@ -44,4 +44,9 @@ const createUsers = async (req, res) => {
   return result;
 };
 
-module.exports = { createOrganizers, createUsers };
+const getAllUsers = async (req) => {
+  const result = await Users.find({});
+  return result;
+};
+
+module.exports = { createOrganizers, createUsers, getAllUsers };
