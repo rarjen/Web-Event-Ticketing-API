@@ -1,19 +1,22 @@
 const mongoose = require("mongoose");
 
-const orderDetailSchema = new mongoose.Schema({
-  ticketCategories: {
-    type: String,
-    required: [true, "Tipe tiket harus diisi"],
+const orderDetailSchema = new mongoose.Schema(
+  {
+    ticketCategories: {
+      type: String,
+      required: [true, "Tipe tiket harus diisi"],
+    },
+    price: {
+      type: Number,
+      default: 0,
+    },
+    sumTicket: {
+      type: Number,
+      required: true,
+    },
   },
-  price: {
-    type: Number,
-    default: 0,
-  },
-  sumTicket: {
-    type: Number,
-    required: true,
-  },
-});
+  { timestamps: true }
+);
 
 const orderSchema = new mongoose.Schema(
   {
@@ -73,7 +76,7 @@ const orderSchema = new mongoose.Schema(
       ref: "Event",
       required: true,
     },
-    hisoryEvent: {
+    historyEvent: {
       title: {
         type: String,
         required: [true, "Title harus diisi"],
