@@ -9,6 +9,11 @@ const createOrganizers = async (req) => {
     throw new BadRequestError("Password tidak cocok");
   }
 
+  const checkOrganizers = await Organizers.findOne({ organizer });
+
+  if (checkOrganizers)
+    throw new BadRequestError("Nama organizer sudah terdaftar");
+
   //create organizer
   const result = await Organizers.create({ organizer });
 
