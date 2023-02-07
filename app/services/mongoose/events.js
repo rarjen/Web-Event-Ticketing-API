@@ -169,7 +169,10 @@ const statusEvents = async (req) => {
   const { statusEvent } = req.body;
   const user = req.user;
 
-  const checkEvent = await findOne({ _id: id, organizer: user.organizer });
+  const checkEvent = await Events.findOne({
+    _id: id,
+    organizer: user.organizer,
+  });
 
   if (!checkEvent) throw new NotFoundError(`Tidak ada event dengan id ${id}`);
 
