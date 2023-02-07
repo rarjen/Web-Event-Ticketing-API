@@ -5,13 +5,12 @@ const {
   find,
   update,
   destroy,
-  statusEvent,
+  changeStatus,
 } = require("./controller");
 const {
   authenticateUser,
   authorizeRoles,
 } = require("../../../middlewares/auth");
-const {} = require("../../../services/mongoose/events");
 
 router.post("/events", authenticateUser, authorizeRoles("organizer"), create);
 router.get("/events", authenticateUser, authorizeRoles("organizer"), index);
@@ -33,7 +32,7 @@ router.put(
   "/events/:id/status",
   authenticateUser,
   authorizeRoles("organizer"),
-  statusEvent
+  changeStatus
 );
 
 module.exports = router;

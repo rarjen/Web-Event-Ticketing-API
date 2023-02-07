@@ -90,7 +90,9 @@ const getOneEvents = async (req) => {
       populate: { path: "image", select: "_id name" },
     });
 
-  if (!result) throw new NotFoundError(`Tidak ada event dengan id: ${id}`);
+  if (!result) {
+    throw new NotFoundError(`Tidak ada event dengan id: ${id}`);
+  }
 
   return result;
 };
@@ -164,10 +166,13 @@ const deleteEvents = async (req) => {
   return result;
 };
 
-const statusEvents = async (req) => {
+const changeStatusEvent = async (req) => {
   const { id } = req.params;
   const { statusEvent } = req.body;
   const user = req.user;
+
+  if (!["Draft", "Published"].includes(statusEvent))
+    throw BadRequestError("Title event sudah terdaftar");
 
   const checkEvent = await Events.findOne({
     _id: id,
@@ -189,5 +194,5 @@ module.exports = {
   getOneEvents,
   updateEvents,
   deleteEvents,
-  statusEvents,
+  changeStatusEvent,
 };
