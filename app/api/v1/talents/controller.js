@@ -1,15 +1,16 @@
 const { StatusCodes } = require("http-status-codes");
+
 const {
-  getAllCategories,
-  createCategories,
-  getOneCategories,
-  updateCategories,
-  deleteCategories,
-} = require("../../../services/mongoose/categories");
+  getAllTalents,
+  getOneTalent,
+  createTalent,
+  updateTalent,
+  deleteTalent,
+} = require("../../../services/mongoose/talents");
 
 const create = async (req, res, next) => {
   try {
-    const result = await createCategories(req);
+    const result = await createTalent(req);
 
     return res.status(StatusCodes.CREATED).json({
       status: true,
@@ -23,7 +24,7 @@ const create = async (req, res, next) => {
 
 const index = async (req, res, next) => {
   try {
-    const result = await getAllCategories(req);
+    const result = await getAllTalents(req);
 
     return res.status(StatusCodes.OK).json({
       status: true,
@@ -37,7 +38,7 @@ const index = async (req, res, next) => {
 
 const find = async (req, res, next) => {
   try {
-    const result = await getOneCategories(req);
+    const result = await getOneTalent(req);
 
     return res.status(StatusCodes.OK).json({
       status: true,
@@ -51,7 +52,7 @@ const find = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const result = await updateCategories(req);
+    const result = await updateTalent(req);
 
     return res.status(StatusCodes.OK).json({
       status: true,
@@ -65,7 +66,7 @@ const update = async (req, res, next) => {
 
 const destroy = async (req, res, next) => {
   try {
-    const result = await deleteCategories(req);
+    const result = await deleteTalent(req);
 
     return res.status(StatusCodes.OK).json({
       status: true,
@@ -77,10 +78,4 @@ const destroy = async (req, res, next) => {
   }
 };
 
-module.exports = {
-  create,
-  find,
-  index,
-  destroy,
-  update,
-};
+module.exports = { create, index, find, update, destroy };
