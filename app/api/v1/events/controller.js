@@ -78,13 +78,17 @@ const destroy = async (req, res, next) => {
 };
 
 const changeStatus = async (req, res, next) => {
-  const result = await changeStatusEvent(req);
+  try {
+    const result = await changeStatusEvent(req);
 
-  return res.status(StatusCodes.OK).json({
-    status: true,
-    message: "Success update status",
-    data: result,
-  });
+    return res.status(StatusCodes.OK).json({
+      status: true,
+      message: "Success update status",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = { create, index, find, update, destroy, changeStatus };
