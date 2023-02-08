@@ -1,5 +1,4 @@
-const { signin } = require("../../../services/mongoose/auth");
-
+const { signin, verify } = require("../../../services/mongoose/auth");
 const { StatusCodes } = require("http-status-codes");
 
 const signinCMS = async (req, res, next) => {
@@ -16,4 +15,18 @@ const signinCMS = async (req, res, next) => {
   }
 };
 
-module.exports = { signinCMS };
+const verifyEmail = async (req, res, next) => {
+  try {
+    const result = await verify(req);
+
+    return res.status(StatusCodes.OK).json({
+      status: true,
+      message: "Success verify email",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { signinCMS, verifyEmail };

@@ -1,9 +1,10 @@
 require("dotenv").config();
 
-const { URL_MONGODB_DEV, JWT_SCRET_KEY } = process.env;
+const { URL_MONGODB_DEV, JWT_SECRET_KEY, URL } = process.env;
 
 module.exports = {
   urlDB: URL_MONGODB_DEV,
   jwtExpiration: "24h",
-  jwtSecret: JWT_SCRET_KEY,
+  jwtSecret: JWT_SECRET_KEY,
+  url: URL,
 };
