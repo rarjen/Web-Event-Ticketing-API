@@ -7,7 +7,6 @@ const { NotFoundError, BadRequestError } = require("../../errors");
 const getAllEvents = async (req) => {
   const user = req.user;
   const { keyword, category, talent, status } = req.query;
-  const { keyword, category, talent, status } = req.query;
 
   let condition = { organizer: user.organizer };
 
