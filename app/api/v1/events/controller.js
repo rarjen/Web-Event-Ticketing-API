@@ -4,7 +4,7 @@ const {
   updateEvents,
   createEvents,
   deleteEvents,
-  statusEvents,
+  changeStatusEvents,
 } = require("../../../services/mongoose/events");
 
 const { StatusCodes } = require("http-status-codes");
@@ -77,14 +77,18 @@ const destroy = async (req, res, next) => {
   }
 };
 
-const statusEvent = async (req, res, next) => {
-  const result = await statusEvents(req);
+const changeStatus = async (req, res, next) => {
+  try {
+    const result = await changeStatusEvents(req);
 
-  return res.status(StatusCodes.OK).json({
-    status: true,
-    message: "Success update status",
-    data: result,
-  });
+    return res.status(StatusCodes.OK).json({
+      status: true,
+      message: "Success update status",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
-module.exports = { create, index, find, update, destroy, statusEvent };
+module.exports = { create, index, find, update, destroy, changeStatus };

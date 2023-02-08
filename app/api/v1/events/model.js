@@ -1,28 +1,54 @@
 const mongoose = require("mongoose");
 
-//dua table digabung krn tiket kategori hanya dimiliki 1 event itu sendiri
-
 const ticketCategoriesSchema = new mongoose.Schema({
-  type: { type: String, required: [true, "Tipe tiket harus diisi"] },
-  price: { type: Number, default: 0 },
-  stock: { type: Number, default: 0 },
-  statusTicketCategories: { type: Boolean, enum: [true, false], default: true },
-  expired: { type: Date },
+  type: {
+    type: String,
+    required: [true, "Tipe tiket harus diisi"],
+  },
+  price: {
+    type: Number,
+    default: 0,
+  },
+  stock: {
+    type: Number,
+    default: 0,
+  },
+  statusTicketCategories: {
+    type: Boolean,
+    enum: [true, false],
+    default: true,
+  },
+  expired: {
+    type: Date,
+  },
 });
 
 const EventSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, "Title harus diisi"],
+      required: [true, "Judul harus diisi"],
       minlength: 3,
       maxlength: 50,
     },
-    date: { type: Date, required: [true, "Tanggal dan waktu harus diisi"] },
-    about: { type: String },
-    tagline: { type: String, required: [true, "Tagline harus diisi"] },
-    keyPoint: { type: [String] },
-    venueName: { type: String, required: [true, "Venue harus diisi"] },
+    date: {
+      type: Date,
+      required: [true, "Tanggal dan waktu harus diisi"],
+    },
+    about: {
+      type: String,
+    },
+    tagline: {
+      type: String,
+      required: [true, "Tagline harus diisi"],
+    },
+    keyPoint: {
+      type: [String],
+    },
+    venueName: {
+      type: String,
+      required: [true, "Tempat acara harus diisi"],
+    },
     statusEvent: {
       type: String,
       enum: ["Draft", "Published"],
@@ -49,7 +75,7 @@ const EventSchema = new mongoose.Schema(
     },
     organizer: {
       type: mongoose.Types.ObjectId,
-      ref: "Orgaqnizer",
+      ref: "Organizer",
       required: true,
     },
   },

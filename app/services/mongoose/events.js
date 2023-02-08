@@ -6,7 +6,7 @@ const { NotFoundError, BadRequestError } = require("../../errors");
 
 const getAllEvents = async (req) => {
   const user = req.user;
-  const { keyword, category, talent } = req.query;
+  const { keyword, category, talent, status } = req.query;
 
   let condition = { organizer: user.organizer };
 
@@ -19,6 +19,13 @@ const getAllEvents = async (req) => {
   }
   if (talent) {
     condition = { ...condition, title: { $regex: talent } };
+  }
+
+  if (["Draft", "Published"].includes(status)) {
+    condition = {
+      ...condition,
+      statusEvent: status,
+    };
   }
 
   const result = await Events.find(condition)
@@ -164,14 +171,20 @@ const deleteEvents = async (req) => {
   return result;
 };
 
-const statusEvents = async (req) => {
+const changeStatusEvents = async (req) => {
   const { id } = req.params;
   const { statusEvent } = req.body;
-  const user = req.user;
 
-  const checkEvent = await findOne({ _id: id, organizer: user.organizer });
+  if (!["Draft", "Published"].includes(statusEvent)) {
+    throw new BadRequestError("Error status event");
+  }
 
-  if (!checkEvent) throw new NotFoundError(`Tidak ada event dengan id ${id}`);
+  const checkEvent = await Events.findOne({
+    _id: id,
+    organizer: req.user.organizer,
+  });
+
+  if (!checkEvent) throw new NotFoundError(`Tidak ada acara dengan id: ${id}`);
 
   checkEvent.statusEvent = statusEvent;
 
@@ -186,5 +199,5 @@ module.exports = {
   getOneEvents,
   updateEvents,
   deleteEvents,
-  statusEvents,
+  changeStatusEvents,
 };
