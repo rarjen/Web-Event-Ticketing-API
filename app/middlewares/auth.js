@@ -32,6 +32,36 @@ const authenticateUser = async (req, res, next) => {
   }
 };
 
+const authenticateParticipant = async (req, res, next) => {
+  try {
+    let token;
+    //check header
+    const authHeader = req.headers.authorization;
+
+    if (authHeader && authHeader.startsWith("Bearer")) {
+      token = authHeader.split(" ")[1];
+    }
+
+    if (!token) {
+      throw new UnauthenticatedError("You're not authorized");
+    }
+
+    const payload = isTokenValid({ token });
+
+    // attach the user and his permissions to the req object
+    req.participant = {
+      id: payload.participantId,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+      email: payload.email,
+    };
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 const authorizeRoles = (...roles) => {
   return (req, res, next) => {
     const user = req.user;
@@ -42,4 +72,4 @@ const authorizeRoles = (...roles) => {
   };
 };
 
-module.exports = { authenticateUser, authorizeRoles };
+module.exports = { authenticateUser, authorizeRoles, authenticateParticipant };
