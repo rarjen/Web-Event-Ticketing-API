@@ -129,7 +129,6 @@ const getOneEvent = async (req) => {
 
 const getAllOrders = async (req) => {
   const participant = req.participant;
-  console.log(participant);
 
   const result = await Orders.find({ participant: participant.id });
 
