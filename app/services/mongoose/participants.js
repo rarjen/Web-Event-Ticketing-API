@@ -137,72 +137,72 @@ const getAllOrders = async (req) => {
   return result;
 };
 
-// const checkoutOrder = async (req) => {
-//   const participant = req.participant;
-//   const { event, personalDetail, payment, tickets } = req.body;
+const checkoutOrder = async (req) => {
+  const participant = req.participant;
+  const { event, payment, tickets, personalDetail } = req.body;
 
-//   const checkingEvent = await Events.findOne({ _id: event });
-//   if (!checkingEvent) {
-//     throw new NotFoundError("Tidak ada acara dengan id: " + event);
-//   }
+  const checkingEvent = await Events.findOne({ _id: event });
+  if (!checkingEvent) {
+    throw new NotFoundError("Tidak ada acara dengan id: " + event);
+  }
 
-//   const checkingPayment = await Payments.findOne({ _id: payment });
-//   if (!checkingPayment) {
-//     throw new NotFoundError(
-//       "Tidak ada metode pembayaran dengan id: " + payment
-//     );
-//   }
+  const checkingPayment = await Payments.findOne({ _id: payment });
+  if (!checkingPayment) {
+    throw new NotFoundError(
+      "Tidak ada metode pembayaran dengan id: " + payment
+    );
+  }
 
-//   let totalPay = 0;
-//   let totalOrderTicket = 0;
+  let totalPay = 0,
+    totalOrderTicket = 0;
 
-//   await tickets.forEach((tic) => {
-//     checkingEvent.tickets.forEach((ticket) => {
-//       if (tic.ticketCategories.type === ticket.type) {
-//         if (tic.sumTicket > ticket.stock) {
-//           throw new NotFoundError("Stock event tidak mencukupi");
-//         } else {
-//           ticket.stock -= tic.sumTicket;
+  await tickets.forEach((tic) => {
+    checkingEvent.tickets.forEach((ticket) => {
+      if (tic.ticketCategories.type === ticket.type) {
+        if (tic.sumTicket > ticket.stock) {
+          throw new NotFoundError("Stock event tidak mencukupi");
+        } else {
+          ticket.stock -= tic.sumTicket;
 
-//           totalOrderTicket += tic.sumTicket;
-//           totalPay += tic.ticketCategories * tic.sumTicket;
-//         }
-//       }
-//     });
-//   });
+          totalOrderTicket += tic.sumTicket;
+          totalPay += tic.ticketCategories.price * tic.sumTicket;
+        }
+      }
+    });
+  });
 
-//   await checkingEvent.save();
+  await checkingEvent.save();
 
-//   const historyEvent = {
-//     title: checkingEvent.title,
-//     date: checkingEvent.date,
-//     about: checkingEvent.about,
-//     tagline: checkingEvent.tagline,
-//     keyPoint: checkingEvent.keyPoint,
-//     venueName: checkingEvent.venueName,
-//     tickets: checkingEvent.tickets,
-//     image: checkingEvent.image,
-//     category: checkingEvent.category,
-//     talent: checkingEvent.talent,
-//     organizer: checkingEvent.organizer,
-//   };
+  const historyEvent = {
+    title: checkingEvent.title,
+    date: checkingEvent.date,
+    about: checkingEvent.about,
+    tagline: checkingEvent.tagline,
+    keyPoint: checkingEvent.keyPoint,
+    venueName: checkingEvent.venueName,
+    tickets: checkingEvent.tickets,
+    image: checkingEvent.image,
+    category: checkingEvent.category,
+    talent: checkingEvent.talent,
+    organizer: checkingEvent.organizer,
+  };
 
-//   const result = new Orders({
-//     date: new Date(),
-//     personalDetail: personalDetail,
-//     totalPay,
-//     totalOrderTicket,
-//     orderItems: tickets,
-//     participant: participant.id,
-//     event,
-//     historyEvent,
-//     payment,
-//   });
+  const result = new Orders({
+    date: new Date(),
+    personalDetail: personalDetail,
+    totalPay,
+    totalOrderTicket,
+    orderItems: tickets,
+    participant: participant.id,
+    event,
+    historyEvent,
+    payment,
+  });
 
-//   await result.save();
+  await result.save();
 
-//   return result;
-// };
+  return result;
+};
 
 module.exports = {
   signupParticipants,
@@ -210,5 +210,5 @@ module.exports = {
   getAllOrders,
   getAllEvents,
   getOneEvent,
-  // checkoutOrder,
+  checkoutOrder,
 };
