@@ -181,6 +181,7 @@ const deleteEvents = async (req) => {
 };
 
 const changeStatusEvent = async (req) => {
+  const user = req.user;
   const { id } = req.params;
   const { statusEvent } = req.body;
 
