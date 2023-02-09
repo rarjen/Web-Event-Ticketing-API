@@ -12,5 +12,6 @@ router.post("/auth/signup", signup);
 router.post("/auth/signin", singin);
 router.get("/events", allEvents);
 router.get("/events/:id", oneEvent);
+router.get("/orders", authenticateParticipant, allOrders);
 
 module.exports = router;
