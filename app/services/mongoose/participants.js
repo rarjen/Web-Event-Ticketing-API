@@ -4,11 +4,7 @@ const Orders = require("../../api/v1/orders/model");
 const jwt = require("jsonwebtoken");
 const { jwtSecret, url } = require("../../config");
 const { sendEmail, templateHtml } = require("../mail");
-const {
-  createTokenUser,
-  createJWT,
-  createTokenParticipant,
-} = require("../../utils/");
+const { createJWT, createTokenParticipant } = require("../../utils/");
 const {
   BadRequestError,
   NotFoundError,
@@ -133,8 +129,9 @@ const getOneEvent = async (req) => {
 
 const getAllOrders = async (req) => {
   const participant = req.participant;
+  console.log(participant);
 
-  const result = await Orders.find({ participant });
+  const result = await Orders.find({ participant: participant.id });
 
   return result;
 };
