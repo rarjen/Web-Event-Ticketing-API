@@ -2,7 +2,7 @@ const Participants = require("../../api/v1/participants/model");
 const Events = require("../../api/v1/events/model");
 const Orders = require("../../api/v1/orders/model");
 const jwt = require("jsonwebtoken");
-const { jwtSecret, jwtExpiration, url } = require("../../config");
+const { jwtSecret, url } = require("../../config");
 const { sendEmail, templateHtml } = require("../mail");
 const {
   BadRequestError,
@@ -15,7 +15,7 @@ const sendingEmail = async (email) => {
     email: email,
   };
   const token = jwt.sign(payload, jwtSecret, { expiresIn: "900s" });
-  const link = `${url}/auth/verify?token=${token}`;
+  const link = `${url}/cms/auth/verify?token=${token}`;
 
   const htmlEmail = await templateHtml("verify-email.ejs", {
     email: email,
