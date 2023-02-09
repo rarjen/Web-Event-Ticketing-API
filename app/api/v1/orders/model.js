@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-const orderDetailSchema = new mongoose.Schema(
-  {
-    ticketCategories: {
+const orderDetailSchema = new mongoose.Schema({
+  ticketCategories: {
+    type: {
       type: String,
       required: [true, "Tipe tiket harus diisi"],
     },
@@ -10,13 +10,12 @@ const orderDetailSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    sumTicket: {
-      type: Number,
-      required: true,
-    },
   },
-  { timestamps: true }
-);
+  sumTicket: {
+    type: Number,
+    required: true,
+  },
+});
 
 const orderSchema = new mongoose.Schema(
   {
@@ -24,7 +23,7 @@ const orderSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    // jika ingin case lebih dari 1 order maka dibuat menjadi array []
+    // jika ingin lebih dari 1 pembeli bisa pakai array
     personalDetail: {
       firstName: {
         type: String,
@@ -32,7 +31,7 @@ const orderSchema = new mongoose.Schema(
         minlength: 3,
         maxlength: 50,
       },
-      firstName: {
+      lastName: {
         type: String,
         required: [true, "Please provide lastName"],
         minlength: 3,
@@ -76,10 +75,11 @@ const orderSchema = new mongoose.Schema(
       ref: "Event",
       required: true,
     },
+
     historyEvent: {
       title: {
         type: String,
-        required: [true, "Title harus diisi"],
+        required: [true, "Judul harus diisi"],
         minlength: 3,
         maxlength: 50,
       },
@@ -101,6 +101,7 @@ const orderSchema = new mongoose.Schema(
         type: String,
         required: [true, "Tempat acara harus diisi"],
       },
+
       image: {
         type: mongoose.Types.ObjectId,
         ref: "Image",
