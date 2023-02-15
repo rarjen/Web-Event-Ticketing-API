@@ -5,22 +5,17 @@ const {
   authorizeRoles,
 } = require("../../../middlewares/auth");
 
-router.post("/categories", authenticateUser, create);
-router.get("/categories", authenticateUser, authorizeRoles("organizer"), index);
-router.get(
-  "/categories/:id",
-  authenticateUser,
-  authorizeRoles("organizer"),
-  find
-);
+router.post("/talents", authenticateUser, authorizeRoles("organizer"), create);
+router.get("/talents", authenticateUser, authorizeRoles("organizer"), index);
+router.get("/talents/:id", authenticateUser, authorizeRoles("organizer"), find);
 router.put(
-  "/categories/:id",
+  "/talents/:id",
   authenticateUser,
   authorizeRoles("organizer"),
   update
 );
 router.delete(
-  "/categories/:id",
+  "/talents/:id",
   authenticateUser,
   authorizeRoles("organizer"),
   destroy

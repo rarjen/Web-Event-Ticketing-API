@@ -1,26 +1,41 @@
 const router = require("express").Router();
-const { create, index, find, update, destroy } = require("./controller");
+const {
+  allPayments,
+  onePayment,
+  update,
+  destroy,
+  create,
+} = require("./controller");
 const {
   authenticateUser,
   authorizeRoles,
 } = require("../../../middlewares/auth");
 
-router.post("/categories", authenticateUser, create);
-router.get("/categories", authenticateUser, authorizeRoles("organizer"), index);
+router.post("/payments", authenticateUser, authorizeRoles("organizer"), create);
+
 router.get(
-  "/categories/:id",
+  "/payments",
   authenticateUser,
   authorizeRoles("organizer"),
-  find
+  allPayments
 );
+
+router.get(
+  "/payments/:id",
+  authenticateUser,
+  authorizeRoles("organizer"),
+  onePayment
+);
+
 router.put(
-  "/categories/:id",
+  "/payments/:id",
   authenticateUser,
   authorizeRoles("organizer"),
   update
 );
+
 router.delete(
-  "/categories/:id",
+  "/payments/:id",
   authenticateUser,
   authorizeRoles("organizer"),
   destroy
