@@ -24,6 +24,7 @@ const paymentsRouter = require("./app/api/v1/payments/router");
 
 const v1 = "/api/v1";
 
+app.use(cors());
 app.set("view engine", "ejs");
 app.use(morgan("dev"));
 app.use(express.json());
@@ -31,7 +32,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
 
 // 200
 app.get("/", (req, res) => {
