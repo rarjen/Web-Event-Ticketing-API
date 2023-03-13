@@ -7,7 +7,7 @@ const createImg = async (req, res, next) => {
 
     return res.status(StatusCodes.OK).json({
       status: true,
-      message: "Delete Data Success",
+      message: "Upload Data Success",
       data: result,
     });
   } catch (error) {
