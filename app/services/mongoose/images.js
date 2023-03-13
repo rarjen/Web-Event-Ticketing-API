@@ -2,7 +2,7 @@ const Images = require("../../api/v1/images/model");
 const { NotFoundError } = require("../../errors");
 
 const generateUrlImage = async (req) => {
-  const result = `upload/${req.file.filename}`;
+  const result = `uploads/${req.file.filename}`;
 
   return result;
 };
@@ -10,7 +10,7 @@ const generateUrlImage = async (req) => {
 const createImages = async (req) => {
   const result = await Images.create({
     name: req.file
-      ? `upload/${req.file.filename}`
+      ? `uploads/${req.file.filename}`
       : "uploads/avatar/default.jpeg",
   });
 

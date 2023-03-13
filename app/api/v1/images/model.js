@@ -8,5 +8,4 @@ let imageSchema = Schema(
   { timestamps: true }
 );
 
-// Nama db, schema
 module.exports = model("Image", imageSchema);
