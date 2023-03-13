@@ -7,6 +7,6 @@ const {
 } = require("../../../middlewares/auth");
 const upload = require("../../../middlewares/multer");
 
-router.post("/images", upload.single("image"), authenticateUser, createImg);
+router.post("/images", upload.single("avatar"), authenticateUser, createImg);
 
 module.exports = router;
