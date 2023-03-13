@@ -36,6 +36,10 @@ const createTalent = async (req) => {
   // cari image dengan field image
   await checkingImage(image);
 
+  if (!name) {
+    throw new BadRequestError("Field tidak boleh kosong");
+  }
+
   // cari talents dengan field name
   const checkName = await Talents.findOne({ name, organizer: user.organizer });
   // const checkImg = await Talents.findOne({ image });
