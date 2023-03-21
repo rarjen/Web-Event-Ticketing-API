@@ -7,7 +7,7 @@ const {
   deletePayments,
 } = require("../../../services/mongoose/payments");
 
-const allPayments = async (req, res, next) => {
+const index = async (req, res, next) => {
   try {
     const result = await getAllPayments(req);
 
@@ -21,7 +21,7 @@ const allPayments = async (req, res, next) => {
   }
 };
 
-const onePayment = async (req, res, next) => {
+const find = async (req, res, next) => {
   try {
     const result = await getOnePayments(req);
 
@@ -77,4 +77,4 @@ const destroy = async (req, res, next) => {
   }
 };
 
-module.exports = { allPayments, onePayment, create, update, destroy };
+module.exports = { index, find, create, update, destroy };
