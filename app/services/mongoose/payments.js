@@ -6,10 +6,12 @@ const getAllPayments = async (req) => {
   const user = req.user;
   let condition = { organizer: user.organizer };
 
-  const result = await Payments.find({ condition })
+  // console.log(condition);
+
+  const result = await Payments.find(condition)
     .populate({
       path: "image",
-      select: "_id name",
+      select: "_id, name",
     })
     .select("_id type status image");
 
