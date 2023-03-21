@@ -6,7 +6,7 @@ const getAllPayments = async (req) => {
   const user = req.user;
   let condition = { organizer: user.organizer };
 
-  const result = await Payments.find(condition)
+  const result = await Payments.find({ condition })
     .populate({
       path: "image",
       select: "_id name",
