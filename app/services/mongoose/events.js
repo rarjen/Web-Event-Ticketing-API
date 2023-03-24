@@ -15,10 +15,10 @@ const getAllEvents = async (req) => {
     condition = { ...condition, title: { $regex: keyword, $options: "i" } };
   }
   if (category) {
-    condition = { ...condition, title: { $regex: category } };
+    condition = { ...condition, category: category };
   }
   if (talent) {
-    condition = { ...condition, title: { $regex: talent } };
+    condition = { ...condition, talent: talent };
   }
 
   if (["Draft", "Published"].includes(status)) {
