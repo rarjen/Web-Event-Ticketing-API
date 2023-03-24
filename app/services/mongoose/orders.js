@@ -24,7 +24,6 @@ const getAllOrders = async (req) => {
       },
     };
   }
-  console.log(condition);
 
   const result = await Orders.find(condition)
     .limit(limit)
