@@ -14,7 +14,12 @@ const {
 
 router.post("/events", authenticateUser, authorizeRoles("organizer"), create);
 router.get("/events", authenticateUser, authorizeRoles("organizer"), index);
-router.get("/events/:id", authenticateUser, authorizeRoles("organizer"), find);
+router.get(
+  "/events/:eventId",
+  authenticateUser,
+  authorizeRoles("organizer"),
+  find
+);
 router.put(
   "/events/:id",
   authenticateUser,
