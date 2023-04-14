@@ -93,9 +93,9 @@ const createEvents = async (req) => {
 
 const getOneEvents = async (req) => {
   const user = req.user;
-  const { id } = req.params;
+  const { eventId } = req.params;
 
-  const result = Events.findOne({ _id: id, organizer: user.organizer })
+  const result = Events.findOne({ _id: eventId, organizer: user.organizer })
     .populate({ path: "image", select: "_id name" })
     .populate({ path: "category", select: "_id name" })
     .populate({
@@ -105,7 +105,7 @@ const getOneEvents = async (req) => {
     });
 
   if (!result) {
-    throw new NotFoundError(`Tidak ada event dengan id: ${id}`);
+    throw new NotFoundError(`Tidak ada event dengan id: ${eventId}`);
   }
 
   return result;
