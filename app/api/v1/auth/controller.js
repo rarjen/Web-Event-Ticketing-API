@@ -8,7 +8,11 @@ const signinCMS = async (req, res, next) => {
     return res.status(StatusCodes.CREATED).json({
       status: true,
       message: "Success login",
-      data: { token: result.token, role: result.role },
+      data: {
+        token: result.token,
+        refreshToken: result.refreshToken,
+        role: result.role,
+      },
     });
   } catch (error) {
     next(error);
