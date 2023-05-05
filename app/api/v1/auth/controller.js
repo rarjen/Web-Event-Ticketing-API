@@ -12,6 +12,7 @@ const signinCMS = async (req, res, next) => {
         token: result.token,
         refreshToken: result.refreshToken,
         role: result.role,
+        email: result.email,
       },
     });
   } catch (error) {
